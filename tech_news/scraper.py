@@ -1,6 +1,22 @@
-# Requisito 1
-def fetch(url):
-    """Seu código deve vir aqui"""
+import time
+import requests
+from requests.exceptions import ConnectTimeout, HTTPError, ReadTimeout
+
+
+trybe_blog_url = "https://blog.betrybe.com/"
+
+headers = {"user-agent": "Fake user-agent"}
+
+
+def fetch(url: str):
+    time.sleep(1)
+    try:
+        res = requests.get(url=trybe_blog_url, headers=headers, timeout=3)
+        res.raise_for_status()
+    except (ConnectTimeout, HTTPError, ReadTimeout):
+        return None
+
+    return res.text
 
 
 # Requisito 2
