@@ -35,9 +35,34 @@ def scrape_next_page_link(html_content):
     return selec.css("a.next ::attr(href)").get()
 
 
-# Requisito 4
 def scrape_news(html_content):
-    """Seu código deve vir aqui"""
+    try:
+        selec = Selector(html_content)
+        category = selec.css("span.label ::text").get()
+        reading_time = int(
+            selec.css("li.meta-reading-time ::text").re_first(r"\d+")
+        )
+        timestamp = selec.css("li.meta-date ::text").get()
+        title = selec.css("h1.entry-title ::text").get().strip()
+        url = selec.css("link[rel=canonical] ::attr(href)").get()
+        writer = selec.css("span.author ::text").get()
+        summary = "".join(
+            selec.css("div.entry-content > p:first-of-type ::text").getall()
+            ).strip()
+
+        news = {
+            "category": category,
+            "reading_time": reading_time,
+            "timestamp": timestamp,
+            "title": title,
+            "url": url,
+            "writer": writer,
+            "summary": summary
+        }
+
+    except ValueError:
+        raise ValueError
+    return news
 
 
 # Requisito 5
