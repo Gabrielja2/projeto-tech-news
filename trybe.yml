@@ -10,4 +10,3 @@ ignore_files:
   - requirements.txt
   - setup.cfg
   - setup.py
-  
