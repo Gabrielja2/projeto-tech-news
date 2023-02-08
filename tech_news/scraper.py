@@ -1,5 +1,6 @@
 import time
 import requests
+from parsel import Selector
 from requests.exceptions import ConnectTimeout, HTTPError, ReadTimeout
 
 
@@ -19,9 +20,14 @@ def fetch(url: str):
     return res.text
 
 
-# Requisito 2
-def scrape_updates(html_content):
-    """Seu código deve vir aqui"""
+def scrape_updates(html_content: str) -> list:
+    selec = Selector(html_content)
+    result = []
+    for post in selec.css("div.archive-main"):
+        href = post.css("h2 > a ::attr(href)").getall()
+        result += href
+
+    return result
 
 
 # Requisito 3
