@@ -1,22 +1,35 @@
 from tech_news.database import search_news
+from datetime import datetime
 
 
 def search_by_title(title: str) -> list[tuple]:
     try:
-        news_list = []
-        find_news = search_news({'title': {'$regex': title, '$options': 'i'}})
-        for news in find_news:
-            news_list += ([(news['title'], news['url'])])
+        list_by_title = []
+        query = {'title': {'$regex': title, '$options': 'i'}}
+        news_by_title = search_news(query)
+        for news in news_by_title:
+            list_by_title += ([(news['title'], news['url'])])
 
     except ValueError:
         return []
 
-    return news_list
+    return list_by_title
 
 
-# Requisito 8
-def search_by_date(date):
-    """Seu código deve vir aqui"""
+def search_by_date(date) -> list[tuple]:
+    try:
+        list_by_date = []
+        new_format_date = datetime.fromisoformat(date).strftime('%d/%m/%Y')
+        query = {"timestamp": {"$eq": new_format_date}}
+        news_by_date = search_news(query)
+
+        for news in news_by_date:
+            list_by_date += ([(news['title'], news['url'])])
+
+    except ValueError:
+        raise ValueError('Data inválida')
+
+    return list_by_date
 
 
 # Requisito 9
