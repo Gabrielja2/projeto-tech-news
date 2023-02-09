@@ -26,12 +26,22 @@ def search_by_date(date) -> list[tuple]:
         for news in news_by_date:
             list_by_date += ([(news['title'], news['url'])])
 
+        return list_by_date
+
     except ValueError:
         raise ValueError('Data inválida')
 
-    return list_by_date
 
-
-# Requisito 9
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    try:
+        list_by_category = []
+        query = {'category': {'$regex': category, '$options': 'i'}}
+        news_by_category = search_news(query)
+
+        for news in news_by_category:
+            list_by_category += ([(news['title'], news['url'])])
+
+        return list_by_category
+
+    except ValueError:
+        return []
